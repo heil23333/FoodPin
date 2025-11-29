@@ -20,6 +20,7 @@ class RestaurantTableViewController: UITableViewController {
         super.viewDidLoad()
 
         tableView.dataSource = dataSource
+        tableView.separatorStyle = .none
         
         var snapshot = NSDiffableDataSourceSnapshot<Section, String>()
         snapshot.appendSections([.all])
@@ -30,7 +31,7 @@ class RestaurantTableViewController: UITableViewController {
     
     func configureDataSource() -> UITableViewDiffableDataSource<Section, String> {
         let dataSource = UITableViewDiffableDataSource<Section, String>(tableView: tableView) { tableView, indexPath, resturantName in
-            let cell = tableView.dequeueReusableCell(withIdentifier: "datacell", for: indexPath) as! RestaurantTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "favoritecell", for: indexPath) as! RestaurantTableViewCell
             cell.nameLabel.text = resturantName
             cell.typeLabel.text = self.restaurantType[indexPath.row]
             cell.locationLabel.text = self.restaurantLocations[indexPath.row]
