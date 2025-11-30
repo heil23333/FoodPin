@@ -117,6 +117,38 @@ class RestaurantTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let restaurant = self.dataSource.itemIdentifier(for: indexPath) else {
+            return UISwipeActionsConfiguration()
+        }
+        
+        let favoriteTitle = restaurant.isFavorite ? "Unfavorite" : "Favorite"
+        let favoriteAction = UIContextualAction(style: .normal, title: favoriteTitle) { (action, sourceView, completeionHandle) in
+            // 1. 更新本地数据源 (这一步是必须的)
+            self.restaurants[indexPath.row].isFavorite.toggle()
+            
+            // 2. 创建一个新的 Snapshot
+            // 既然数据变了（Struct hash 变了），我们直接告诉系统：“这是现在的全新数据状态”
+            var snapshot = NSDiffableDataSourceSnapshot<Section, Restaurant>()
+            snapshot.appendSections([.all])
+            snapshot.appendItems(self.restaurants)
+            
+            // 3. 应用 Snapshot
+            // animatingDifferences 设为 false，这样更新会很干脆，不会出现奇怪的删除/插入动画
+            self.dataSource.apply(snapshot, animatingDifferences: false)
+            completeionHandle(true)
+        }
+        if restaurant.isFavorite {
+            favoriteAction.image = UIImage(systemName: "heart.slash.fill")
+        } else {
+            favoriteAction.image = UIImage(systemName: "heart.fill")
+        }
+        favoriteAction.backgroundColor = .systemRed
+        
+        
+        return UISwipeActionsConfiguration(actions: [favoriteAction])
+    }
+    
     //MARK: - 从尾部滑动的操作
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let restaurant = self.dataSource.itemIdentifier(for: indexPath) else {
@@ -130,15 +162,32 @@ class RestaurantTableViewController: UITableViewController {
             self.dataSource.apply(snapshot, animatingDifferences: true)
             completeionHandle(true)//true表示动作已完成
         }
+        deleteAction.image = UIImage(systemName: "trash")
         
         //分享动作
         let shareAction = UIContextualAction(style: .normal, title: "Share") { (action, sourceView, completeionHandle) in
             let defaultText = "Just checking in at \(restaurant.name)"
-            //实现分享功能的核心代码, 会根据你传入的activityItems自动匹配
-            let activityController = UIActivityViewController(activityItems: [defaultText], applicationActivities: nil)
+            
+            var activityController: UIActivityViewController
+            if let image = UIImage(named: restaurant.image) {
+                activityController = UIActivityViewController(activityItems: [defaultText, image], applicationActivities: nil)
+            } else {
+                activityController = UIActivityViewController(activityItems: [defaultText], applicationActivities: nil)
+            }
+            
+            //针对大屏设备优化
+            if let popoverController = activityController.popoverPresentationController {
+                if let cell = tableView.cellForRow(at: indexPath) {
+                    popoverController.sourceView = cell
+                    popoverController.sourceRect = cell.bounds
+                }
+            }
+            
             self.present(activityController, animated: true, completion: nil)
             completeionHandle(true)
         }
+        shareAction.image = UIImage(systemName: "square.and.arrow.up")
+        shareAction.backgroundColor = .systemYellow
         
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction, shareAction])
         return swipeConfiguration
