@@ -36,6 +36,7 @@ class RestaurantTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.prefersLargeTitles = true//大标题
         tableView.cellLayoutMarginsFollowReadableWidth = true//自动调节cell宽度
 
         tableView.dataSource = dataSource
@@ -68,54 +69,54 @@ class RestaurantTableViewController: UITableViewController {
     }
     
     //MARK: - cell被选择
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let optionMenu = UIAlertController(title: nil, message: "What do you want to do?", preferredStyle: .actionSheet)
-        
-        //针对iPad
-        if let popoverController = optionMenu.popoverPresentationController {
-            if let cell = tableView.cellForRow(at: indexPath) {
-                popoverController.sourceView = cell
-                popoverController.sourceRect = cell.bounds
-            }
-        }
-        
-        //reserve选项
-        let reserveActionHandler = { (action: UIAlertAction) -> Void in
-            let alertMessage = UIAlertController(title: "Not available yet", message: "Sorry, this feature is not yet available yet. Please retry later", preferredStyle: .alert)
-            alertMessage.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alertMessage, animated: true, completion: nil)
-            
-        }
-        let reserveAction = UIAlertAction(title: "Reserve a table", style: .default, handler: reserveActionHandler)
-        optionMenu.addAction(reserveAction)
-        
-        //favorite选项
-        let title = self.restaurants[indexPath.row].isFavorite ? "Undo Checkin" : "Mark as favorite"
-        let favoriteAction = UIAlertAction(title: title, style: .default) { (action: UIAlertAction) -> Void in
-            // 1. 更新本地数据源 (这一步是必须的)
-            self.restaurants[indexPath.row].isFavorite.toggle()
-            
-            // 2. 创建一个新的 Snapshot
-            // 既然数据变了（Struct hash 变了），我们直接告诉系统：“这是现在的全新数据状态”
-            var snapshot = NSDiffableDataSourceSnapshot<Section, Restaurant>()
-            snapshot.appendSections([.all])
-            snapshot.appendItems(self.restaurants)
-            
-            // 3. 应用 Snapshot
-            // animatingDifferences 设为 false，这样更新会很干脆，不会出现奇怪的删除/插入动画
-            self.dataSource.apply(snapshot, animatingDifferences: false)
-        }
-        optionMenu.addAction(favoriteAction)
-        
-        //cancel选项
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        optionMenu.addAction(cancelAction)
-        
-        present(optionMenu, animated: true, completion: nil)
-        
-        //取消选择
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let optionMenu = UIAlertController(title: nil, message: "What do you want to do?", preferredStyle: .actionSheet)
+//        
+//        //针对iPad
+//        if let popoverController = optionMenu.popoverPresentationController {
+//            if let cell = tableView.cellForRow(at: indexPath) {
+//                popoverController.sourceView = cell
+//                popoverController.sourceRect = cell.bounds
+//            }
+//        }
+//        
+//        //reserve选项
+//        let reserveActionHandler = { (action: UIAlertAction) -> Void in
+//            let alertMessage = UIAlertController(title: "Not available yet", message: "Sorry, this feature is not yet available yet. Please retry later", preferredStyle: .alert)
+//            alertMessage.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//            self.present(alertMessage, animated: true, completion: nil)
+//            
+//        }
+//        let reserveAction = UIAlertAction(title: "Reserve a table", style: .default, handler: reserveActionHandler)
+//        optionMenu.addAction(reserveAction)
+//        
+//        //favorite选项
+//        let title = self.restaurants[indexPath.row].isFavorite ? "Undo Checkin" : "Mark as favorite"
+//        let favoriteAction = UIAlertAction(title: title, style: .default) { (action: UIAlertAction) -> Void in
+//            // 1. 更新本地数据源 (这一步是必须的)
+//            self.restaurants[indexPath.row].isFavorite.toggle()
+//            
+//            // 2. 创建一个新的 Snapshot
+//            // 既然数据变了（Struct hash 变了），我们直接告诉系统：“这是现在的全新数据状态”
+//            var snapshot = NSDiffableDataSourceSnapshot<Section, Restaurant>()
+//            snapshot.appendSections([.all])
+//            snapshot.appendItems(self.restaurants)
+//            
+//            // 3. 应用 Snapshot
+//            // animatingDifferences 设为 false，这样更新会很干脆，不会出现奇怪的删除/插入动画
+//            self.dataSource.apply(snapshot, animatingDifferences: false)
+//        }
+//        optionMenu.addAction(favoriteAction)
+//        
+//        //cancel选项
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+//        optionMenu.addAction(cancelAction)
+//        
+//        present(optionMenu, animated: true, completion: nil)
+//        
+//        //取消选择
+//        tableView.deselectRow(at: indexPath, animated: true)
+//    }
     
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let restaurant = self.dataSource.itemIdentifier(for: indexPath) else {

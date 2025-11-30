@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="nd8-sp-How">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="U6w-aB-v3t">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Restaurant Table View Controller-->
+        <!--Food Pin-->
         <scene sceneID="cjX-ui-fgN">
             <objects>
                 <tableViewController id="nd8-sp-How" customClass="RestaurantTableViewController" customModule="FoodPin" customModuleProvider="target" sceneMemberID="viewController">
@@ -74,6 +75,7 @@
                                     <outlet property="nameLabel" destination="O56-N0-W1H" id="pM3-CD-kqg"/>
                                     <outlet property="thumbnailImageView" destination="mo7-hH-BT6" id="oax-Ya-xJw"/>
                                     <outlet property="typeLabel" destination="TPB-JG-9MI" id="3H8-gu-13K"/>
+                                    <segue destination="DJi-1Z-O4f" kind="show" id="Qbd-qH-LIP"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="favoritecell" id="qh8-vl-HsV" customClass="RestaurantTableViewCell" customModule="FoodPin" customModuleProvider="target">
@@ -135,6 +137,7 @@
                                     <outlet property="nameLabel" destination="Vfe-GJ-E5U" id="zyx-BC-O04"/>
                                     <outlet property="thumbnailImageView" destination="OQd-JG-90E" id="7fi-m6-KEY"/>
                                     <outlet property="typeLabel" destination="fC7-iG-16g" id="FoR-Fc-W8v"/>
+                                    <segue destination="DJi-1Z-O4f" kind="show" id="rBg-Vj-JIU"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -143,12 +146,61 @@
                             <outlet property="delegate" destination="nd8-sp-How" id="u3S-FL-g3g"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Food Pin" id="Xyd-o0-M5H"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ant-lS-mHQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2086.2595419847326" y="-43.661971830985919"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="hRb-TW-7xC">
+            <objects>
+                <viewController id="DJi-1Z-O4f" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Fzz-J3-TNM">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YFp-cC-AYD">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Nft-zc-UZ9"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="YFp-cC-AYD" secondAttribute="bottom" id="Dzv-VA-r8H"/>
+                            <constraint firstItem="YFp-cC-AYD" firstAttribute="trailing" secondItem="Nft-zc-UZ9" secondAttribute="trailing" id="XS1-s5-3We"/>
+                            <constraint firstItem="YFp-cC-AYD" firstAttribute="top" secondItem="Fzz-J3-TNM" secondAttribute="top" id="fol-EK-V7S"/>
+                            <constraint firstItem="YFp-cC-AYD" firstAttribute="leading" secondItem="Nft-zc-UZ9" secondAttribute="leading" id="hAK-sP-PC2"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Gh7-QG-9Ik"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rxs-76-kg1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2929" y="-44"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="VY5-ar-xQw">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="U6w-aB-v3t" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="MZD-ma-nD9">
+                        <rect key="frame" x="0.0" y="118" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="nd8-sp-How" kind="relationship" relationship="rootViewController" id="G9R-od-gOO"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VRg-7f-NYj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1159.5419847328244" y="-43.661971830985919"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="Qbd-qH-LIP"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
