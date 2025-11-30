@@ -146,7 +146,6 @@ class RestaurantTableViewController: UITableViewController {
         }
         favoriteAction.backgroundColor = .systemRed
         
-        
         return UISwipeActionsConfiguration(actions: [favoriteAction])
     }
     
@@ -192,5 +191,14 @@ class RestaurantTableViewController: UITableViewController {
         
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction, shareAction])
         return swipeConfiguration
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showRestaurantDetail" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let destinationController = segue.destination as! RestaurantDetailUIViewController
+                destinationController.restaurant = restaurants[indexPath.row]
+            }
+        }
     }
 }
