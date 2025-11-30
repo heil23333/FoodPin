@@ -48,8 +48,8 @@ class RestaurantTableViewController: UITableViewController {
         dataSource.apply(snapshot, animatingDifferences: false)
     }
     
-    func configureDataSource() -> UITableViewDiffableDataSource<Section, Restaurant> {
-        let dataSource = UITableViewDiffableDataSource<Section, Restaurant>(tableView: tableView) { tableVmliew, indexPath, restaurant in
+    func configureDataSource() -> RestaurantDiffableDataSource {
+        let dataSource = RestaurantDiffableDataSource(tableView: tableView) { tableVmliew, indexPath, restaurant in
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "datacell", for: indexPath) as! RestaurantTableViewCell
             cell.nameLabel.text = restaurant.name
             cell.typeLabel.text = restaurant.type
@@ -67,6 +67,7 @@ class RestaurantTableViewController: UITableViewController {
         return dataSource
     }
     
+    //MARK: - cell被选择
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let optionMenu = UIAlertController(title: nil, message: "What do you want to do?", preferredStyle: .actionSheet)
         
@@ -115,8 +116,31 @@ class RestaurantTableViewController: UITableViewController {
         //取消选择
         tableView.deselectRow(at: indexPath, animated: true)
     }
-}
-
-enum Section {
-    case all
+    
+    //MARK: - 从尾部滑动的操作
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let restaurant = self.dataSource.itemIdentifier(for: indexPath) else {
+            return UISwipeActionsConfiguration()
+        }
+        
+        //删除动作
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completeionHandle) in
+            var snapshot = self.dataSource.snapshot()
+            snapshot.deleteItems([restaurant])
+            self.dataSource.apply(snapshot, animatingDifferences: true)
+            completeionHandle(true)//true表示动作已完成
+        }
+        
+        //分享动作
+        let shareAction = UIContextualAction(style: .normal, title: "Share") { (action, sourceView, completeionHandle) in
+            let defaultText = "Just checking in at \(restaurant.name)"
+            //实现分享功能的核心代码, 会根据你传入的activityItems自动匹配
+            let activityController = UIActivityViewController(activityItems: [defaultText], applicationActivities: nil)
+            self.present(activityController, animated: true, completion: nil)
+            completeionHandle(true)
+        }
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction, shareAction])
+        return swipeConfiguration
+    }
 }
