@@ -8,10 +8,9 @@
 import UIKit
 
 class RestaurantDetailUIViewController: UIViewController {
-    @IBOutlet weak var restaurantImageView: UIImageView!
-    @IBOutlet weak var restaurantNameLabel: UILabel!
-    @IBOutlet weak var typeLabel: UILabel!
-    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var headerView: RestaurantDetailHeaderView!
+    
     var restaurant: Restaurant?
     
     override func viewDidLoad() {
@@ -19,10 +18,13 @@ class RestaurantDetailUIViewController: UIViewController {
 
         navigationItem.largeTitleDisplayMode = .never
         if let restaurant = restaurant {
-            restaurantImageView.image = UIImage(named: restaurant.image)
-            restaurantNameLabel.text = restaurant.name
-            typeLabel.text = restaurant.type
-            locationLabel.text = restaurant.location
+            headerView.nameLabel.text = restaurant.name
+            headerView.typeLabel.text = restaurant.type
+            headerView.headerImageView.image = UIImage(named: restaurant.image)
+            let heartImageName = restaurant.isFavorite ? "heart.fill" : "heart"
+            headerView.heartButton.configuration = nil//ios15以上tintColor等属性会被configuration覆盖
+            headerView.heartButton.setImage(UIImage(systemName: heartImageName), for: .normal)
+            headerView.heartButton.tintColor = restaurant.isFavorite ? .systemRed : .white
         }
         
     }
