@@ -11,22 +11,22 @@ class RestaurantDetailUIViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var headerView: RestaurantDetailHeaderView!
     
-    var restaurant: Restaurant?
+    var restaurant: Restaurant = Restaurant()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.largeTitleDisplayMode = .never
         
-        if let restaurant = restaurant {
-            headerView.nameLabel.text = restaurant.name
-            headerView.typeLabel.text = restaurant.type
-            headerView.headerImageView.image = UIImage(named: restaurant.image)
-            let heartImageName = restaurant.isFavorite ? "heart.fill" : "heart"
-            headerView.heartButton.configuration = nil//ios15以上tintColor等属性会被configuration覆盖
-            headerView.heartButton.setImage(UIImage(systemName: heartImageName), for: .normal)
-            headerView.heartButton.tintColor = restaurant.isFavorite ? .systemRed : .white
-        }
+        
+        headerView.nameLabel.text = restaurant.name
+        headerView.typeLabel.text = restaurant.type
+        headerView.headerImageView.image = UIImage(named: restaurant.image)
+        let heartImageName = restaurant.isFavorite ? "heart.fill" : "heart"
+        headerView.heartButton.configuration = nil//ios15以上tintColor等属性会被configuration覆盖
+        headerView.heartButton.setImage(UIImage(systemName: heartImageName), for: .normal)
+        headerView.heartButton.tintColor = restaurant.isFavorite ? .systemRed : .white
+    
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
@@ -55,19 +55,21 @@ extension RestaurantDetailUIViewController: UITableViewDataSource, UITableViewDe
         switch indexPath.row {
             case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RestaurantDetailTextCell.self), for: indexPath) as! RestaurantDetailTextCell
-            cell.descriptionLabel.text = restaurant?.description
+            cell.descriptionLabel.text = restaurant.description
             return cell
             case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RestaurantDetailTwoColumnCell.self), for: indexPath) as! RestaurantDetailTwoColumnCell
             
             cell.column1TitleLabel.text = "Adress"
-            cell.column1TextLabel.text = restaurant?.location
+            cell.column1TextLabel.text = restaurant.location
             cell.column2TitleLabel.text = "Phone"
-            cell.column2TextLabel.text = restaurant?.phone
+            cell.column2TextLabel.text = restaurant.phone
             
             return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RestaurantDetailMapCell.self), for: indexPath) as! RestaurantDetailMapCell
+            cell.configure(location: restaurant.location)
+            cell.selectionStyle = .none
             return cell
         default:
             fatalError("Failed to create cell")
@@ -76,5 +78,12 @@ extension RestaurantDetailUIViewController: UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showMap" {
+            let destinationController = segue.destination as! MapViewController
+            destinationController.restaurant = restaurant
+        }
     }
 }

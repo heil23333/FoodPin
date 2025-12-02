@@ -342,6 +342,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="mapView" destination="dd4-zf-YHS" id="ko9-b7-Wh6"/>
+                                            <segue destination="D4f-lV-Lny" kind="show" identifier="showMap" id="BrR-FE-qds"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -366,6 +367,37 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rxs-76-kg1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2927.4809160305344" y="-44.366197183098592"/>
+        </scene>
+        <!--Map View Controller-->
+        <scene sceneID="xjf-II-Cac">
+            <objects>
+                <viewController id="D4f-lV-Lny" customClass="MapViewController" customModule="FoodPin" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BXO-dP-X4Q">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pjO-X7-ryc">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <standardMapConfiguration key="preferredConfiguration"/>
+                            </mapView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Wp5-nY-gte"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="pjO-X7-ryc" secondAttribute="trailing" id="K5G-y7-tev"/>
+                            <constraint firstItem="pjO-X7-ryc" firstAttribute="leading" secondItem="Wp5-nY-gte" secondAttribute="leading" id="a94-pf-BKr"/>
+                            <constraint firstItem="pjO-X7-ryc" firstAttribute="top" secondItem="BXO-dP-X4Q" secondAttribute="top" id="qOi-Mk-BsV"/>
+                            <constraint firstAttribute="bottom" secondItem="pjO-X7-ryc" secondAttribute="bottom" id="qgX-35-THa"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="QdY-Qj-R6P"/>
+                    <connections>
+                        <outlet property="mapView" destination="pjO-X7-ryc" id="jbt-Vq-jEU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xK2-4K-FcK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3921" y="-44"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="VY5-ar-xQw">
