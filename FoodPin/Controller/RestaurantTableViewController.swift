@@ -60,6 +60,8 @@ class RestaurantTableViewController: UITableViewController {
         
         tableView.dataSource = dataSource
         tableView.separatorStyle = .none
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 140 // 给一个估算值，提高性能
         
         var snapshot = NSDiffableDataSourceSnapshot<Section, Restaurant>()
         snapshot.appendSections([.all])
