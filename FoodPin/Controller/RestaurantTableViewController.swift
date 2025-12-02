@@ -36,7 +36,26 @@ class RestaurantTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let appearance = navigationController?.navigationBar.standardAppearance {
+            appearance.configureWithTransparentBackground()//透明背景, 无阴影
+            
+            if let customFont = UIFont(name: "Nunito-Bold", size: 45), let customColor = UIColor(named: "NavigationBarTitle") {
+                appearance.titleTextAttributes = [.foregroundColor: customColor]
+                appearance.largeTitleTextAttributes = [.foregroundColor: customColor, .font: customFont]
+            }
+            //标准尺寸的导航栏
+            navigationController?.navigationBar.standardAppearance = appearance
+            //小尺寸导航栏
+            navigationController?.navigationBar.compactAppearance = appearance
+            //滚动到边缘时的导航栏
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        }
+        
         navigationController?.navigationBar.prefersLargeTitles = true//大标题
+        
+        navigationItem.backButtonTitle = ""//得在要返回的页面设置
+        
         tableView.cellLayoutMarginsFollowReadableWidth = true//自动调节cell宽度
         
         tableView.dataSource = dataSource
@@ -47,6 +66,11 @@ class RestaurantTableViewController: UITableViewController {
         snapshot.appendItems(restaurants)
         
         dataSource.apply(snapshot, animatingDifferences: false)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.hidesBarsOnSwipe = true
     }
     
     func configureDataSource() -> RestaurantDiffableDataSource {
