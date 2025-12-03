@@ -10,6 +10,7 @@ import UIKit
 class RestaurantDetailUIViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var headerView: RestaurantDetailHeaderView!
+    @IBOutlet var ratingImageView: UIImageView!
     
     var restaurant: Restaurant = Restaurant()
     
@@ -17,7 +18,7 @@ class RestaurantDetailUIViewController: UIViewController {
         super.viewDidLoad()
 
         navigationItem.largeTitleDisplayMode = .never
-        
+        navigationItem.backButtonTitle = ""
         
         headerView.nameLabel.text = restaurant.name
         headerView.typeLabel.text = restaurant.type
@@ -81,9 +82,29 @@ extension RestaurantDetailUIViewController: UITableViewDataSource, UITableViewDe
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showMap" {
+        switch segue.identifier {
+        case "showMap":
             let destinationController = segue.destination as! MapViewController
             destinationController.restaurant = restaurant
+        case "showReview":
+            let destinationController = segue.destination as! ReviewViewController
+            destinationController.restaurant = restaurant
+            break
+        default :
+            break
+        }
+    }
+    
+    @IBAction func close(segue: UIStoryboardSegue) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func rateRestaurant(segue: UIStoryboardSegue) {
+        guard let identifer = segue.identifier else { return }
+        
+        if let rating = Restaurant.Rating(rawValue: identifer) {
+            self.restaurant.rating = rating
+            self.headerView.ratingImage.image = UIImage(named: rating.image)
         }
     }
 }

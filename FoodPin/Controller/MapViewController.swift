@@ -32,11 +32,32 @@ class MapViewController: UIViewController {
                 if let location = firstPlacemark?.location {
                     annotation.coordinate = location.coordinate
                     
-                    self.mapView.showAnnotations( [annotation], animated: true)
+                    self.mapView.showAnnotations( [annotation], animated: true)//放置大头针
                     self.mapView.selectAnnotation(annotation, animated: true)
                 }
             }
         }
+        mapView.delegate = self
+        mapView.showsCompass = true
+        mapView.showsScale = true
+        mapView.showsTraffic = true
     }
+}
 
+extension MapViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: any MKAnnotation) -> MKAnnotationView? {
+        let identifier = "MyMarker"//这里MyMarker可以任意取名, 只是为了复用区别
+        if annotation.isKind(of: MKUserLocation.self) {//MKUserLocation是系统自动创建的注解, 不能自定义显示
+            return nil//返回nil表示由系统处理
+        }
+        
+        var annotationView: MKMarkerAnnotationView? = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView//复用annotationView
+        if annotationView == nil {
+            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+        }
+        annotationView?.glyphText = "🎈"//标记上显示的文字
+        annotationView?.markerTintColor = UIColor.orange
+        
+        return annotationView
+    }
 }

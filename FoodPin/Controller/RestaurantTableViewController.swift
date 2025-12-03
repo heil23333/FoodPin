@@ -185,6 +185,7 @@ class RestaurantTableViewController: UITableViewController {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completeionHandle) in
             var snapshot = self.dataSource.snapshot()
             snapshot.deleteItems([restaurant])
+            self.restaurants.remove(at: indexPath.row)
             self.dataSource.apply(snapshot, animatingDifferences: true)
             completeionHandle(true)//true表示动作已完成
         }
