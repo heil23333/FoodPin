@@ -110,7 +110,7 @@ class RestaurantTableViewController: UITableViewController {
     //        let reserveActionHandler = { (action: UIAlertAction) -> Void in
     //            let alertMessage = UIAlertController(title: "Not available yet", message: "Sorry, this feature is not yet available yet. Please retry later", preferredStyle: .alert)
     //            alertMessage.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-    //            self.present(alertMessage, animated: true, completion: nil)
+    //            self.present(alertMessage, animated: true)
     //
     //        }
     //        let reserveAction = UIAlertAction(title: "Reserve a table", style: .default, handler: reserveActionHandler)
@@ -138,7 +138,7 @@ class RestaurantTableViewController: UITableViewController {
     //        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
     //        optionMenu.addAction(cancelAction)
     //
-    //        present(optionMenu, animated: true, completion: nil)
+    //        present(optionMenu, animated: true)
     //
     //        //取消选择
     //        tableView.deselectRow(at: indexPath, animated: true)
@@ -210,7 +210,7 @@ class RestaurantTableViewController: UITableViewController {
                 }
             }
             
-            self.present(activityController, animated: true, completion: nil)
+            self.present(activityController, animated: true)
             completeionHandle(true)
         }
         shareAction.image = UIImage(systemName: "square.and.arrow.up")
@@ -230,6 +230,6 @@ class RestaurantTableViewController: UITableViewController {
     }
     
     @IBAction func unwindToHome(segue: UIStoryboardSegue) {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 }

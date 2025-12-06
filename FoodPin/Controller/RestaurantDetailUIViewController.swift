@@ -96,7 +96,7 @@ extension RestaurantDetailUIViewController: UITableViewDataSource, UITableViewDe
     }
     
     @IBAction func close(segue: UIStoryboardSegue) {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
     
     @IBAction func rateRestaurant(segue: UIStoryboardSegue) {
