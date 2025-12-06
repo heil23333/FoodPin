@@ -71,6 +71,11 @@ class NewRestaurantController: UITableViewController {
         photoImageView.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
         photoImageView.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
         
+        //创建一个手势识别器, 点击View时调用View的endEditing方法, 这个view即屏幕内容的根容器(UIViewController.view)
+        let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        //取消传递触摸给子view, 为true不传给子View
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
     }
 }
 
