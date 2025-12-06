@@ -46,7 +46,7 @@ class NewRestaurantController: UITableViewController {
             photoImageView.layer.masksToBounds = true
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -77,6 +77,26 @@ class NewRestaurantController: UITableViewController {
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
+    
+    //MARK: - checkFields 检查所有filed是否已填写内容
+    func checkFields() -> Bool {
+        if (!nameTextField.hasText || !typeTextField.hasText || !addressTextField.hasText || !phoneTextField.hasText || !descriptionTextView.hasText) {
+            return false
+        }
+        return true
+    }
+    
+    @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
+        if !checkFields() {
+            let alertController = UIAlertController(title: "Oops", message: "We can't proceed because one of the fileds is blank. Please note that all fileds are required.", preferredStyle: .alert)
+            let alertAction = UIAlertAction(title: "OK", style: .default)
+            alertController.addAction(alertAction)
+            present(alertController, animated: true)
+        } else {
+            print("name: \(nameTextField.text ?? "")\n type: \(typeTextField.text ?? "")\n address: \(addressTextField.text ?? "")\n phone: \(phoneTextField.text ?? "")\n description: \(descriptionTextView.text ?? "")")
+        }
+        
+    }
 }
 
 extension NewRestaurantController: UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -89,6 +109,7 @@ extension NewRestaurantController: UITextFieldDelegate, UIImagePickerControllerD
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.row == 0 {
             //弹窗
             let photoSourceRequestController = UIAlertController(title: "", message: "Choose your photo source", preferredStyle: .actionSheet)

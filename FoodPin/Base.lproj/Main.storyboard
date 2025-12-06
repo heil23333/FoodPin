@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Map view configurations" minToolsVersion="14.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -616,6 +617,12 @@
                             <color key="tintColor" systemColor="labelColor"/>
                             <connections>
                                 <segue destination="gUp-zQ-hFz" kind="unwind" unwindAction="unwindToHomeWithSegue:" id="kzY-8J-VEd"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="6St-SV-FLv">
+                            <color key="tintColor" name="NavigationBarTitle"/>
+                            <connections>
+                                <action selector="saveButtonTapped:" destination="d4q-pK-nRZ" id="83Q-Nf-iLs"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
