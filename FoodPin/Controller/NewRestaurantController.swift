@@ -60,6 +60,17 @@ class NewRestaurantController: UITableViewController {
                 navigationController?.navigationBar.scrollEdgeAppearance = appearance
             }
         }
+        
+        //获取父View的内边距区域
+        let margins = photoImageView.superview!.layoutMarginsGuide
+        //关闭自动跳转大小遮罩, 这样就能避免冲突, 完全按代码来***非常重要***
+        photoImageView.translatesAutoresizingMaskIntoConstraints = false
+        //将photoImageView的前面鱼父View的内边距区域的前面对齐, 下面的同理
+        photoImageView.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+        photoImageView.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+        photoImageView.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
+        photoImageView.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
+        
     }
 }
 
