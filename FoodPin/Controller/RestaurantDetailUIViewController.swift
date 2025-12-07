@@ -54,7 +54,7 @@ class RestaurantDetailUIViewController: UIViewController {
         navigationItem.rightBarButtonItem?.image = UIImage(systemName: heartImageName)
         navigationItem.rightBarButtonItem?.tintColor = restaurant.isFavorite ? .systemRed : .white
         
-        dataStore?.fetchRestaurantData()
+        dataStore?.fetchRestaurantData(searchText: "")
     }
 }
 

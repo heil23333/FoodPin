@@ -13,6 +13,8 @@ class RestaurantTableViewController: UITableViewController, RestaurantDataStore 
     
     @IBOutlet var emptyRestaurantView: UIView!
     
+    var searchController: UISearchController!
+    
     var container: ModelContainer?
     
     lazy var dataSource = configureDataSource()
@@ -35,6 +37,12 @@ class RestaurantTableViewController: UITableViewController, RestaurantDataStore 
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
         }
         
+        //导航栏添加搜索列
+        searchController = UISearchController(searchResultsController: nil)
+        navigationItem.searchController = searchController
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        
         navigationController?.navigationBar.prefersLargeTitles = true//大标题
         
         navigationItem.backButtonTitle = ""//得在要返回的页面设置
@@ -48,14 +56,23 @@ class RestaurantTableViewController: UITableViewController, RestaurantDataStore 
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 140 // 给一个估算值，提高性能
         
-        fetchRestaurantData()
+        fetchRestaurantData(searchText: "")
         
         tableView.backgroundView = emptyRestaurantView
         tableView.backgroundView?.isHidden = restaurants.count == 0 ? false : true
     }
     
-    func fetchRestaurantData() {
-        let descriptor = FetchDescriptor<Restaurant>()
+    func fetchRestaurantData(searchText: String) {
+        let descriptor: FetchDescriptor<Restaurant>
+        if searchText.isEmpty {
+            descriptor = FetchDescriptor<Restaurant>()
+        } else {
+            let predicate = #Predicate<Restaurant> {
+                $0.name.localizedStandardContains(searchText)
+            }
+            descriptor = FetchDescriptor<Restaurant>(predicate: predicate)
+        }
+        
         restaurants = (try? container?.mainContext.fetch(descriptor)) ?? []
         updateSnapshot()
     }
@@ -236,10 +253,19 @@ class RestaurantTableViewController: UITableViewController, RestaurantDataStore 
     
     @IBAction func unwindToHome(segue: UIStoryboardSegue) {
         dismiss(animated: true)
-        fetchRestaurantData()
+        fetchRestaurantData(searchText: "")
     }
 }
 
+extension RestaurantTableViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else { return }
+        fetchRestaurantData(searchText: searchText)
+    }
+    
+    
+}
+
 protocol RestaurantDataStore {
-    func fetchRestaurantData()
+    func fetchRestaurantData(searchText: String)
 }
