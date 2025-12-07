@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftData
 
 class NewRestaurantController: UITableViewController {
     @IBOutlet var nameTextField: RoundedTextField! {
@@ -47,6 +48,10 @@ class NewRestaurantController: UITableViewController {
         }
     }
     
+    var container: ModelContainer?
+    var restaurant: Restaurant?
+    var dataStore: RestaurantDataStore?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -76,6 +81,9 @@ class NewRestaurantController: UITableViewController {
         //取消传递触摸给子view, 为true不传给子View
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
+        
+        container = try? ModelContainer(for: Restaurant.self)
+        restaurant = Restaurant()
     }
     
     //MARK: - checkFields 检查所有filed是否已填写内容
@@ -93,7 +101,27 @@ class NewRestaurantController: UITableViewController {
             alertController.addAction(alertAction)
             present(alertController, animated: true)
         } else {
-            print("name: \(nameTextField.text ?? "")\n type: \(typeTextField.text ?? "")\n address: \(addressTextField.text ?? "")\n phone: \(phoneTextField.text ?? "")\n description: \(descriptionTextView.text ?? "")")
+            if let restaurant = restaurant {
+                restaurant.name = nameTextField.text ?? ""
+                restaurant.type = typeTextField.text ?? ""
+                restaurant.location = addressTextField.text ?? ""
+                restaurant.phone = phoneTextField.text ?? ""
+                restaurant.summary = descriptionTextView.text ?? ""
+                restaurant.isFavorite = false
+                if let image = photoImageView.image {
+                    restaurant.image = image
+                }
+                do {
+                    container?.mainContext.insert(restaurant)
+                    try container?.mainContext.save() // 👈 必须调用
+                } catch {
+                    print("❌ 保存失败: \(error)")
+                }
+                
+                dismiss(animated: true) {
+                    self.dataStore?.fetchRestaurantData()
+                }
+            }
         }
         
     }

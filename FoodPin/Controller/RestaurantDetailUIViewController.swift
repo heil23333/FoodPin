@@ -22,7 +22,7 @@ class RestaurantDetailUIViewController: UIViewController {
         
         headerView.nameLabel.text = restaurant.name
         headerView.typeLabel.text = restaurant.type
-        headerView.headerImageView.image = UIImage(named: restaurant.image)
+        headerView.headerImageView.image = restaurant.image
         let heartImageName = restaurant.isFavorite ? "heart.fill" : "heart"
         headerView.heartButton.configuration = nil//ios15以上tintColor等属性会被configuration覆盖
         headerView.heartButton.setImage(UIImage(systemName: heartImageName), for: .normal)
@@ -56,7 +56,7 @@ extension RestaurantDetailUIViewController: UITableViewDataSource, UITableViewDe
         switch indexPath.row {
             case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RestaurantDetailTextCell.self), for: indexPath) as! RestaurantDetailTextCell
-            cell.descriptionLabel.text = restaurant.description
+            cell.descriptionLabel.text = restaurant.summary
             return cell
             case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RestaurantDetailTwoColumnCell.self), for: indexPath) as! RestaurantDetailTwoColumnCell
