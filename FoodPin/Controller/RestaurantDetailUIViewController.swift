@@ -12,6 +12,8 @@ class RestaurantDetailUIViewController: UIViewController {
     @IBOutlet weak var headerView: RestaurantDetailHeaderView!
     @IBOutlet var ratingImageView: UIImageView!
     
+    var dataStore: RestaurantDataStore?
+    
     var restaurant: Restaurant = Restaurant()
     
     override func viewDidLoad() {
@@ -23,10 +25,10 @@ class RestaurantDetailUIViewController: UIViewController {
         headerView.nameLabel.text = restaurant.name
         headerView.typeLabel.text = restaurant.type
         headerView.headerImageView.image = restaurant.image
+        
         let heartImageName = restaurant.isFavorite ? "heart.fill" : "heart"
-        headerView.heartButton.configuration = nil//ios15以上tintColor等属性会被configuration覆盖
-        headerView.heartButton.setImage(UIImage(systemName: heartImageName), for: .normal)
-        headerView.heartButton.tintColor = restaurant.isFavorite ? .systemRed : .white
+        navigationItem.rightBarButtonItem?.image = UIImage(systemName: heartImageName)
+        navigationItem.rightBarButtonItem?.tintColor = restaurant.isFavorite ? .systemRed : .white
     
         tableView.dataSource = self
         tableView.delegate = self
@@ -44,6 +46,15 @@ class RestaurantDetailUIViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    @IBAction func totalFavoritePressed(_ sender: UIBarButtonItem) {
+        restaurant.isFavorite.toggle()
+        let heartImageName = restaurant.isFavorite ? "heart.fill" : "heart"
+        navigationItem.rightBarButtonItem?.image = UIImage(systemName: heartImageName)
+        navigationItem.rightBarButtonItem?.tintColor = restaurant.isFavorite ? .systemRed : .white
+        
+        dataStore?.fetchRestaurantData()
     }
 }
 

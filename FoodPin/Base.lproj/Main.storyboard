@@ -224,18 +224,6 @@
                                                 </label>
                                             </subviews>
                                         </stackView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HMH-qZ-93K" userLabel="Heart Button">
-                                            <rect key="frame" x="304" y="18" width="71" height="50"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="71" id="XgF-PL-jyF"/>
-                                                <constraint firstAttribute="height" constant="50" id="vN4-tM-RwV"/>
-                                            </constraints>
-                                            <state key="normal" title="Button"/>
-                                            <buttonConfiguration key="configuration" style="plain" image="heart" catalog="system">
-                                                <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="30"/>
-                                                <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </buttonConfiguration>
-                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -251,13 +239,10 @@
                                         <constraint firstItem="2yN-p5-ghW" firstAttribute="bottom" secondItem="itq-qh-dZZ" secondAttribute="bottom" id="gDR-JM-wqu"/>
                                         <constraint firstAttribute="trailing" secondItem="2yN-p5-ghW" secondAttribute="trailing" id="jRh-Yd-bhZ"/>
                                         <constraint firstItem="itq-qh-dZZ" firstAttribute="leading" secondItem="HMx-23-OYW" secondAttribute="leading" id="m0c-Zy-CcI"/>
-                                        <constraint firstItem="HMH-qZ-93K" firstAttribute="top" secondItem="HMx-23-OYW" secondAttribute="topMargin" constant="10" id="wQT-CJ-MN3"/>
                                         <constraint firstAttribute="trailing" secondItem="rzO-3Z-TfV" secondAttribute="trailing" constant="150" id="xKl-33-DOc"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="HMH-qZ-93K" secondAttribute="trailing" constant="10" id="z8l-g4-EdJ"/>
                                     </constraints>
                                     <connections>
                                         <outlet property="headerImageView" destination="itq-qh-dZZ" id="vxK-gJ-rev"/>
-                                        <outlet property="heartButton" destination="HMH-qZ-93K" id="cpN-5J-P2Y"/>
                                         <outlet property="nameLabel" destination="o7I-4z-LsE" id="fcH-xo-vbD"/>
                                         <outlet property="ratingImage" destination="DqF-EW-nXL" id="tgx-th-249"/>
                                         <outlet property="typeLabel" destination="3YH-CN-rQD" id="bsm-P6-tXh"/>
@@ -420,7 +405,13 @@
                             <constraint firstItem="HUB-gr-cRO" firstAttribute="trailing" secondItem="Nft-zc-UZ9" secondAttribute="trailing" id="ZXS-TQ-8HP"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Gh7-QG-9Ik"/>
+                    <navigationItem key="navigationItem" id="Gh7-QG-9Ik">
+                        <barButtonItem key="rightBarButtonItem" image="heart" catalog="system" id="uK4-tq-OTW">
+                            <connections>
+                                <action selector="totalFavoritePressed:" destination="DJi-1Z-O4f" id="9It-1m-n7G"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <size key="freeformSize" width="393" height="1200"/>
                     <connections>
                         <outlet property="headerView" destination="HMx-23-OYW" id="2s4-zo-gvz"/>

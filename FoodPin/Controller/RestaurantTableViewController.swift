@@ -152,17 +152,20 @@ class RestaurantTableViewController: UITableViewController, RestaurantDataStore 
         let favoriteTitle = restaurant.isFavorite ? "Unfavorite" : "Favorite"
         let favoriteAction = UIContextualAction(style: .normal, title: favoriteTitle) { (action, sourceView, completeionHandle) in
             // 1. 更新本地数据源 (这一步是必须的)
-            self.restaurants[indexPath.row].isFavorite.toggle()
+            restaurant.isFavorite.toggle()
             
-            // 2. 创建一个新的 Snapshot
-            // 既然数据变了（Struct hash 变了），我们直接告诉系统：“这是现在的全新数据状态”
-            var snapshot = NSDiffableDataSourceSnapshot<Section, Restaurant>()
-            snapshot.appendSections([.all])
-            snapshot.appendItems(self.restaurants)
+            // 1. 获取当前数据源的快照
+            var snapshot = self.dataSource.snapshot()
+
+            // 2. 告诉快照这个项目需要重新加载/重新配置
+            //    ⚠️ 关键步骤：reloadItems 方法会告诉数据源，下次渲染时要重新调用 cell provider
+            snapshot.reloadItems([restaurant])
+
+            // 3. 应用新的快照
+            //    调用 apply 才会触发数据源的更新机制，进而调用 Cell Provider 闭包
+            self.dataSource.apply(snapshot, animatingDifferences: true)
             
-            // 3. 应用 Snapshot
-            // animatingDifferences 设为 false，这样更新会很干脆，不会出现奇怪的删除/插入动画
-            self.dataSource.apply(snapshot, animatingDifferences: false)
+//            self.fetchRestaurantData()
             completeionHandle(true)
         }
         if restaurant.isFavorite {
@@ -187,6 +190,7 @@ class RestaurantTableViewController: UITableViewController, RestaurantDataStore 
             snapshot.deleteItems([restaurant])
             self.restaurants.remove(at: indexPath.row)
             self.dataSource.apply(snapshot, animatingDifferences: true)
+            self.container?.mainContext.delete(restaurant)
             completeionHandle(true)//true表示动作已完成
         }
         deleteAction.image = UIImage(systemName: "trash")
@@ -221,6 +225,7 @@ class RestaurantTableViewController: UITableViewController, RestaurantDataStore 
             if let indexPath = tableView.indexPathForSelectedRow {
                 let destinationController = segue.destination as! RestaurantDetailUIViewController
                 destinationController.restaurant = restaurants[indexPath.row]
+                destinationController.dataStore = self
             }
         } else if segue.identifier == "addResaurant" {
             if let navController = segue.destination as? UINavigationController, let destinationController = navController.topViewController as? NewRestaurantController {
@@ -231,6 +236,7 @@ class RestaurantTableViewController: UITableViewController, RestaurantDataStore 
     
     @IBAction func unwindToHome(segue: UIStoryboardSegue) {
         dismiss(animated: true)
+        fetchRestaurantData()
     }
 }
 
