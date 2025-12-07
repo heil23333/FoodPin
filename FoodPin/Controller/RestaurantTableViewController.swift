@@ -39,9 +39,11 @@ class RestaurantTableViewController: UITableViewController, RestaurantDataStore 
         
         //导航栏添加搜索列
         searchController = UISearchController(searchResultsController: nil)
-        navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.tintColor = .label
+        navigationItem.searchController = searchController
+//        tableView.tableHeaderView = searchController.searchBar
         
         navigationController?.navigationBar.prefersLargeTitles = true//大标题
         
@@ -68,7 +70,8 @@ class RestaurantTableViewController: UITableViewController, RestaurantDataStore 
             descriptor = FetchDescriptor<Restaurant>()
         } else {
             let predicate = #Predicate<Restaurant> {
-                $0.name.localizedStandardContains(searchText)
+                $0.name.localizedStandardContains(searchText) ||
+                $0.location.localizedStandardContains(searchText)
             }
             descriptor = FetchDescriptor<Restaurant>(predicate: predicate)
         }
@@ -197,6 +200,10 @@ class RestaurantTableViewController: UITableViewController, RestaurantDataStore 
     
     //MARK: - 从尾部滑动的操作
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if searchController.isActive {//搜索时禁止分享和删除动作
+            return UISwipeActionsConfiguration()
+        }
+        
         guard let restaurant = self.dataSource.itemIdentifier(for: indexPath) else {
             return UISwipeActionsConfiguration()
         }
