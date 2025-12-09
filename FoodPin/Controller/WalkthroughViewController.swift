@@ -30,6 +30,7 @@ class WalkthroughViewController: UIViewController {
             case 0...1:
                 walkthroughPageViewController?.forwardPage()
             case 2:
+                UserDefaults.standard.set(true, forKey: "hasViewWalkthrough")
                 dismiss(animated: true)
             default:
                 break
@@ -55,6 +56,7 @@ class WalkthroughViewController: UIViewController {
     }
     
     @IBAction func skipTapped(_ sender: UIButton) {
+        UserDefaults.standard.set(true, forKey: "hasViewWalkthrough")
         dismiss(animated: true)
     }
     

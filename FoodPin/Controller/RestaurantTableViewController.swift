@@ -65,6 +65,10 @@ class RestaurantTableViewController: UITableViewController, RestaurantDataStore 
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        if UserDefaults.standard.bool(forKey: "hasViewWalkthrough") {
+            return
+        }
+        
         let storyboard = UIStoryboard(name: "Onboarding", bundle: nil)
         if let walkthroughViewCOntroller = storyboard.instantiateViewController(withIdentifier: "WalkthroughViewController") as? WalkthroughViewController {
             present(walkthroughViewCOntroller, animated: true)
