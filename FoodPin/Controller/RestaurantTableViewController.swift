@@ -64,6 +64,13 @@ class RestaurantTableViewController: UITableViewController, RestaurantDataStore 
         tableView.backgroundView?.isHidden = restaurants.count == 0 ? false : true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        let storyboard = UIStoryboard(name: "Onboarding", bundle: nil)
+        if let walkthroughViewCOntroller = storyboard.instantiateViewController(withIdentifier: "WalkthroughViewController") as? WalkthroughViewController {
+            present(walkthroughViewCOntroller, animated: true)
+        }
+    }
+    
     func fetchRestaurantData(searchText: String) {
         let descriptor: FetchDescriptor<Restaurant>
         if searchText.isEmpty {
