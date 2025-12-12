@@ -6,8 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		187869952EEC0632002524F4 /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 187869932EEC0632002524F4 /* About.storyboard */; };
+		187869E32EEC1236002524F4 /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 187869E12EEC1236002524F4 /* Discover.storyboard */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		187868832ED99C06002524F4 /* FoodPin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodPin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		187869942EEC0632002524F4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = FoodPin/Storyboard/Base.lproj/About.storyboard; sourceTree = "<group>"; };
+		187869E22EEC1236002524F4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = FoodPin/Storyboard/Base.lproj/Discover.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -45,6 +52,8 @@
 		1878687A2ED99C06002524F4 = {
 			isa = PBXGroup;
 			children = (
+				187869E12EEC1236002524F4 /* Discover.storyboard */,
+				187869932EEC0632002524F4 /* About.storyboard */,
 				187868852ED99C06002524F4 /* FoodPin */,
 				187868842ED99C06002524F4 /* Products */,
 			);
@@ -122,6 +131,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				187869952EEC0632002524F4 /* About.storyboard in Resources */,
+				187869E32EEC1236002524F4 /* Discover.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +147,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		187869932EEC0632002524F4 /* About.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				187869942EEC0632002524F4 /* Base */,
+			);
+			name = About.storyboard;
+			sourceTree = "<group>";
+		};
+		187869E12EEC1236002524F4 /* Discover.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				187869E22EEC1236002524F4 /* Base */,
+			);
+			name = Discover.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		187868972ED99C07002524F4 /* Debug */ = {
