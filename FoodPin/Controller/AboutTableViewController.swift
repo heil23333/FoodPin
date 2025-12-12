@@ -93,10 +93,21 @@ class AboutTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let linkItem = self.dataSource.itemIdentifier(for: indexPath) else { return }
         
-        if let url = URL(string: linkItem.link) {
-            UIApplication.shared.open(url)//在Safari浏览器打开该链接
-        }
+//        if let url = URL(string: linkItem.link) {
+//            UIApplication.shared.open(url)//在Safari浏览器打开该链接
+//        }
+        
+        performSegue(withIdentifier: "showWebView", sender: self)
         
         tableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showWebView",
+           let destination = segue.destination as? WebViewController,
+           let indexPath = tableView.indexPathForSelectedRow,
+           let linkItem = self.dataSource.itemIdentifier(for: indexPath){
+            destination.targetURL = linkItem.link
+        }
     }
 }

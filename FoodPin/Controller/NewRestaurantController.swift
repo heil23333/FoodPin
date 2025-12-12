@@ -57,8 +57,11 @@ class NewRestaurantController: UITableViewController {
 
         if let appearance = navigationController?.navigationBar.standardAppearance {
             if let customFont = UIFont(name: "Nunito-Bold", size: 40) {
-                appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "NavigationBarTitle")]
-                appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "NavigationBarTitle"), .font: customFont]
+                
+                if let color = UIColor(named: "NavigationBarTitle") {
+                    appearance.titleTextAttributes = [.foregroundColor: color]
+                    appearance.largeTitleTextAttributes = [.foregroundColor: color, .font: customFont]
+                }
                 
                 navigationController?.navigationBar.standardAppearance = appearance
                 navigationController?.navigationBar.compactAppearance = appearance
