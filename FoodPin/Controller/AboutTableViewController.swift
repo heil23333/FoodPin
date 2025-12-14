@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 enum AboutSection {
     case feedback
@@ -97,7 +98,19 @@ class AboutTableViewController: UITableViewController {
 //            UIApplication.shared.open(url)//在Safari浏览器打开该链接
 //        }
         
-        performSegue(withIdentifier: "showWebView", sender: self)
+        switch indexPath.section {
+        case 0:
+            performSegue(withIdentifier: "showWebView", sender: self)
+            break
+        case 1:
+            openWithSafariViewController(indexPath: indexPath)
+            break
+        default:
+            break
+        }
+        
+        
+        
         
         tableView.deselectRow(at: indexPath, animated: false)
     }
@@ -108,6 +121,15 @@ class AboutTableViewController: UITableViewController {
            let indexPath = tableView.indexPathForSelectedRow,
            let linkItem = self.dataSource.itemIdentifier(for: indexPath){
             destination.targetURL = linkItem.link
+        }
+    }
+    
+    func openWithSafariViewController(indexPath: IndexPath) {
+        guard let linkItem = self.dataSource.itemIdentifier(for: indexPath) else { return }
+        
+        if let url = URL(string: linkItem.link) {
+            let safariViewController = SFSafariViewController(url: url)
+            present(safariViewController, animated: true)
         }
     }
 }
